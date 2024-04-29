@@ -21,7 +21,9 @@ const CreateItemPage = () => {
   const types = ['image/png', 'image/jpeg']; // image types
   const userId = localStorage.getItem('user_id')
   const token = Cookies.get("token")
-
+  useEffect(()=>{
+    console.log(pdfFile)
+  },[pdfFile])
   const { data: userCollectionData, isPending, error } = useFetch(`http://localhost:4000/api/collection/${userId}`);
   useEffect(() => {
 
@@ -77,8 +79,9 @@ const CreateItemPage = () => {
         }
         }
       }
-    console.log(item)
+    
     try {
+      console.log(item.itemFile)
       const response = await fetch('http://localhost:4000/api/item', {
         method: 'POST',
         headers: {
@@ -125,7 +128,7 @@ const CreateItemPage = () => {
   const handlePdfChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
+      setPdfFile(JSON.parse(file)); 
     } else {
       alert('Please select a valid PDF file.');
       setPdfFile(null);
